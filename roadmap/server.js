@@ -11,7 +11,7 @@ new MongoClient(url)
   .connect()
   .then((client) => {
     console.log("DB Connect");
-    db = client.db("Think_buy"); // database name
+    db = client.db("Goal"); // database name
 
     // DB접속이 완료 되어야 서버를 띄우도록 하기
     app.listen(8080, () => {
@@ -28,8 +28,9 @@ app.use(express.static(__dirname + "/public"));
 // ejs 엔진 사용하겠다 선언
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-  res.render("roadHome.ejs");
+app.get("/", async (req, res) => {
+  let result = await db.collection("goalList").find().toArray();
+  res.render("roadHome.ejs", { goal: result });
 });
 
 app.get("/createGoal", (req, res) => {
