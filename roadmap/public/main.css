@@ -1,0 +1,29 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  width: 800px;
+  margin: 0 auto;
+}
+
+nav {
+  width: 100%;
+  height: 60px;
+  padding-top: 30px;
+  border-bottom: 1px solid #999;
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  height: 1000px;
+  background-color: #eee;
+}
+
+#progress {
+  margin: 20px;
+  width: 400px;
+  height: 8px;
+}

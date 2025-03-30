@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.0/progressbar.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <h2>퀘스트</h2>
+      </nav>
+      <div id="progress"></div>
+    </div>
+
+    <script>
+      const bar = new ProgressBar.Line("#progress", {
+        strokeWidth: 4,
+        easing: "easeInOut",
+        duration: 1000,
+        color: "#FFEA82",
+        trailColor: "#eee",
+        trailWidth: 1,
+        svgStyle: { width: "80%", height: "100%" },
+        from: { color: "#FFEA82" },
+        to: { color: "#ED6A5A" },
+        step: (state, bar) => {
+          bar.path.setAttribute("stroke", state.color);
+        },
+      });
+
+      bar.animate(1.0);
+    </script>
+  </body>
+</html>
