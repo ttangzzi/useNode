@@ -11,28 +11,47 @@
   <body>
     <div class="container">
       <nav>
-        <h2>퀘스트</h2>
+        <h2>목표 관리</h2>
       </nav>
-      <div id="progress"></div>
+      <div>
+        <p>캡스톤 디자인</p>
+        <div id="progress"></div>
+      </div>
+      <a href="/createGoal">생성</a>
     </div>
 
     <script>
       const bar = new ProgressBar.Line("#progress", {
-        strokeWidth: 4,
-        easing: "easeInOut",
-        duration: 1000,
-        color: "#FFEA82",
-        trailColor: "#eee",
-        trailWidth: 1,
-        svgStyle: { width: "80%", height: "100%" },
-        from: { color: "#FFEA82" },
-        to: { color: "#ED6A5A" },
+        strokeWidth: 4, // 선 두께 설정
+        easing: "easeInOut", // 애니메이션 방식
+        duration: 1000, // 0에서 100%로 애니메이션 되는데 걸리는 시간(밀리초)
+        color: "#FFEA82", // 프로그래스바의 색상
+        trailColor: "#fff", // 배경색
+        trailWidth: 1, // 배경색의 선 두께
+
+        svgStyle: { width: "100%", height: "100%" }, // SVG 요소 스타일 설정
+        text: {
+          style: {
+            // Text color.
+            // Default: same as stroke color (options.color)
+            color: "#999",
+            position: "absolute",
+            right: "0",
+            top: "30px",
+            padding: 0,
+            margin: 0,
+            transform: null,
+          },
+          autoStyleContainer: false,
+        },
+        from: { color: "#FFEA82" }, // 시작 색상 설정
+        to: { color: "#ED6A5A" }, // 끝 색상 설정
         step: (state, bar) => {
-          bar.path.setAttribute("stroke", state.color);
+          bar.setText(Math.round(bar.value() * 100) + " %");
         },
       });
 
-      bar.animate(1.0);
+      bar.animate(0.5);
     </script>
   </body>
 </html>

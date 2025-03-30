@@ -31,3 +31,7 @@ app.set("view engine", "ejs");
 app.get("/", (req, res) => {
   res.render("roadHome.ejs");
 });
+
+app.get("/createGoal", (req, res) => {
+  res.render("createGoal.ejs");
+});
