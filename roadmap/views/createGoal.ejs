@@ -11,30 +11,32 @@
       <nav>
         <h2>목표 생성</h2>
       </nav>
-      <div>
-        <p>목표 제목</p>
-        <input type="text" />
-      </div>
-      <div>
-        <p>목표 설명</p>
-        <input type="text" />
-      </div>
-      <div>
-        <p>시작 날짜</p>
-        <input type="date" />
-        <p>끝 날짜</p>
-        <input type="date" />
-      </div>
-      <div>
-        <p>목표 단계 설정</p>
-        <button id="addButton">+</button>
-        <button id="deleteButton">-</button>
-        <div id="goalList">
-          <p>1단계 과정</p>
-          <input type="text" />
+      <form action="/goalPost" method="POST">
+        <div>
+          <p>목표 제목</p>
+          <input type="text" name="title" />
         </div>
-      </div>
-      <input type="submit" value="생성" />
+        <div>
+          <p>목표 설명</p>
+          <input type="text" name="content" />
+        </div>
+        <div>
+          <p>시작 날짜</p>
+          <input type="date" name="startDate" />
+          <p>끝 날짜</p>
+          <input type="date" name="endDate" />
+        </div>
+        <div>
+          <p>목표 단계 설정</p>
+          <div id="addButton">+</div>
+          <div id="deleteButton">-</div>
+          <div id="goalList">
+            <p>1단계 과정</p>
+            <input type="text" name="grade_1" />
+          </div>
+        </div>
+        <input type="submit" value="생성" />
+      </form>
     </div>
     <script>
       const addButton = document.querySelector("#addButton");
@@ -46,12 +48,14 @@
         if (sum <= 5) {
           const newDiv = document.createElement("div");
           const newP = document.createElement("p");
-          newP.textContent = `${sum++}단계 과정`;
+          newP.textContent = `${sum}단계 과정`;
           const newInput = document.createElement("input");
+          newInput.setAttribute("name", `grade_${sum}`);
 
           newDiv.appendChild(newP);
           newDiv.appendChild(newInput);
           goalList.appendChild(newDiv);
+          sum++;
         } else {
           alert("더 이상 생성 불가합니다.");
         }

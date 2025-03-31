@@ -28,6 +28,10 @@ app.use(express.static(__dirname + "/public"));
 // ejs 엔진 사용하겠다 선언
 app.set("view engine", "ejs");
 
+// req.body를 통해 클라이언트에서 보낸 정보를 가져올 수 있도록 하는 코드
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", async (req, res) => {
   let result = await db.collection("goalList").find().toArray();
   res.render("roadHome.ejs", { goal: result });
@@ -35,4 +39,38 @@ app.get("/", async (req, res) => {
 
 app.get("/createGoal", (req, res) => {
   res.render("createGoal.ejs");
+});
+
+app.post("/goalPost", async (req, res) => {
+  const { title, content, startDate, endDate, grade_1 } = req.body;
+
+  if (
+    title == "" ||
+    content == "" ||
+    startDate == "" ||
+    endDate == "" ||
+    grade_1 == ""
+  ) {
+    return res.status(400).send("모든 필수 입력값을 채워주세요.");
+  }
+
+  let gradeArray = [];
+  for (let i = 1; i <= 5; i++) {
+    if (req.body[`grade_${i}`]) {
+      gradeArray.push(req.body[`grade_${i}`]);
+    } else {
+      break;
+    }
+  }
+
+  const createGoal = {
+    title: title,
+    content: content,
+    startDate: startDate,
+    endDate: endDate,
+    grade: gradeArray,
+  };
+
+  await db.collection("goalList").insertOne(createGoal);
+  res.redirect("/");
 });
