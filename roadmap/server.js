@@ -44,13 +44,17 @@ app.get("/write", (req, res) => {
 });
 
 app.post("/write", async (req, res) => {
-  let data = {
-    title: req.body.title,
-    content: req.body.content,
-    date: new Date().toISOString().slice(0, 10),
-  };
-  await db.collection("post").insertOne(data);
-  res.redirect("/");
+  if (req.body.title !== "" && req.body.content !== "") {
+    let data = {
+      title: req.body.title,
+      content: req.body.content,
+      date: new Date().toISOString().slice(0, 10),
+    };
+    await db.collection("post").insertOne(data);
+    res.redirect("/");
+  } else {
+    res.render("error.ejs");
+  }
 });
 
 app.get("/detail/:id", async (req, res) => {

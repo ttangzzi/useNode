@@ -93,3 +93,65 @@ a {
   text-decoration: none;
   color: black;
 }
+
+/* -------------- write.ejs ---------------- */
+.write_form {
+  width: 700px;
+  margin: 0 auto;
+  margin-top: 200px;
+}
+
+.write_box {
+  width: 100%;
+  text-align: center;
+}
+
+.write_title {
+  width: 90%;
+  height: 30px;
+  margin: 0 auto;
+  font-size: 25px;
+  padding: 0 10px;
+  border: none;
+  border-bottom: 1px solid #999;
+  display: block;
+  background-color: #eee;
+}
+
+.write_title:focus {
+  outline: none;
+}
+
+.write_content {
+  width: 90%;
+  height: 100px;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 15px;
+  border: 1px solid #999;
+  border-radius: 5px;
+  background-color: #eee;
+  resize: none;
+  word-spacing: -2px;
+}
+
+.write_content:focus {
+  outline: none;
+}
+
+.write_btn {
+  width: 100px;
+  height: 40px;
+  margin-left: 550px;
+  border: 1px solid #999;
+  border-radius: 5px;
+  background-color: #eee;
+}
+
+.write_btn:hover {
+  background-color: #ddd;
+}
+
+.write_btn:focus {
+  background-color: #ccc;
+}

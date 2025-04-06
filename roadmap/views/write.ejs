@@ -9,13 +9,22 @@
   </head>
   <body>
     <div class="container">
-      <form action="/write" method="POST">
-        <%- include("nav.ejs") %>
-        <p>제목</p>
-        <input type="text" name="title" />
-        <p>내용</p>
-        <textarea name="content"></textarea>
-        <button>작성 완료</button>
+      <%- include("nav.ejs") %>
+      <form class="write_form" action="/write" method="POST">
+        <div class="write_box">
+          <input
+            class="write_title"
+            placeholder="제목을 작성해주세요."
+            type="text"
+            name="title"
+          />
+          <textarea
+            class="write_content"
+            placeholder="내용을 작성해주세요."
+            name="content"
+          ></textarea>
+          <button class="write_btn">작성 완료</button>
+        </div>
       </form>
     </div>
   </body>
