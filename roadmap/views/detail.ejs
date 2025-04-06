@@ -15,7 +15,7 @@
           <h2><%= detail.title %></h2>
         </div>
         <div class="edit_or_delete">
-          <a class="edit" href="#">수정</a>
+          <a class="edit" href="/edit/<%= detail._id %>">수정</a>
           <form action="/delete/<%= detail._id %>" method="POST">
             <button class="delete">삭제</button>
           </form>
@@ -25,14 +25,5 @@
         </div>
       </div>
     </div>
-
-    <!-- <script>
-      const deleteBtn = document.querySelector(".delete");
-      deleteBtn.addEventListener("click", () => {
-        fetch("/delete/<%= detail._id %>", {
-          method: "DELETE",
-        });
-      });
-    </script> -->
   </body>
 </html>

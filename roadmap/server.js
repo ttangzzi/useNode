@@ -73,3 +73,22 @@ app.post("/delete/:id", async (req, res) => {
   await db.collection("post").deleteOne({ _id: new ObjectId(req.params.id) });
   res.redirect("/");
 });
+
+app.get("/edit/:id", async (req, res) => {
+  let result = await db
+    .collection("post")
+    .findOne({ _id: new ObjectId(req.params.id) });
+  res.render("edit.ejs", { post: result });
+});
+
+app.post("/edit/:id", async (req, res) => {
+  let data = {
+    title: req.body.title,
+    content: req.body.content,
+    date: new Date().toISOString().slice(0, 10),
+  };
+  await db
+    .collection("post")
+    .updateOne({ _id: new ObjectId(req.params.id) }, { $set: data });
+  res.redirect("/");
+});
