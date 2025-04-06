@@ -6,6 +6,10 @@
   font-style: normal;
 }
 
+.hidden {
+  display: none;
+}
+
 * {
   margin: 0px;
 }
@@ -56,9 +60,16 @@ body {
   flex: 0.5; /* 더 적은 공간을 차지 */
 }
 
-.container .post_container .post_header span:nth-child(4),
+.container .post_container .post_header span:nth-child(4) {
+  flex: 0.6;
+}
+
 .container .post_container .post_bottom span:nth-child(4) {
   flex: 0.5;
+}
+
+.container .post_container .post_bottom span:nth-child(5) {
+  flex: 0.1;
 }
 
 .container .post_container .post_bottom .post_item {
@@ -71,6 +82,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.container .post_container .post_bottom .post_item .quick_delete {
+  padding-bottom: 5px;
 }
 
 .container .nav {
@@ -154,4 +169,44 @@ a {
 
 .write_btn:focus {
   background-color: #ccc;
+}
+
+/* -------------- detail.ejs ---------------- */
+.detail_box {
+  width: 700px;
+  height: 500px;
+  margin: 0 auto;
+  margin-top: 200px;
+}
+
+.detail_title {
+  border-bottom: 1px solid #999;
+  padding: 0 0 5px 5px;
+}
+
+.edit_or_delete {
+  position: relative;
+  padding: 5px 0 5px 5px;
+}
+
+.edit_or_delete .edit {
+  position: absolute;
+  right: 50px;
+  font-size: 14px;
+  color: #222;
+}
+
+.edit_or_delete .delete {
+  position: absolute;
+  right: 5px;
+  padding: 0;
+  border: none;
+  font-size: 14px;
+  color: #222;
+  font-family: "GowunDodum-Regular";
+}
+
+.detail_content {
+  margin-top: 30px;
+  padding: 5px 0 5px 5px;
 }

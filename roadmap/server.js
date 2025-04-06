@@ -63,3 +63,13 @@ app.get("/detail/:id", async (req, res) => {
     .findOne({ _id: new ObjectId(req.params.id) });
   res.render("detail.ejs", { detail: result });
 });
+
+app.delete("/delete/:id", async (req, res) => {
+  await db.collection("post").deleteOne({ _id: new ObjectId(req.params.id) });
+  res.json({ success: true });
+});
+
+app.post("/delete/:id", async (req, res) => {
+  await db.collection("post").deleteOne({ _id: new ObjectId(req.params.id) });
+  res.redirect("/");
+});

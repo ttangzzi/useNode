@@ -24,11 +24,31 @@
             <a href="/detail/<%= posts[i]._id %>"><%= posts[i].content %></a>
             <span>정땅찌</span>
             <span><%= posts[i].date %></span>
+            <span class="quick_delete" data-id="<%= posts[i]._id %>">🗑️</span>
           </div>
           <% } %>
         </div>
         <div class="post_footer"></div>
       </div>
     </div>
+
+    <script>
+      const deleteBtn = document.querySelectorAll(".quick_delete");
+      for (let i = 0; i < deleteBtn.length; i++) {
+        deleteBtn[i].addEventListener("click", function (e) {
+          fetch("/delete/" + e.target.dataset.id, {
+            method: "DELETE",
+          })
+            .then((r) => {
+              if (r.ok) {
+                e.target.parentElement.style.display = "none";
+              }
+            })
+            .catch((error) => {
+              console.log("오류");
+            });
+        });
+      }
+    </script>
   </body>
 </html>
