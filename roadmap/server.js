@@ -36,6 +36,20 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
   let result = await db.collection("post").find().toArray();
+  // 보이는 글자 수 제한
+  let titleMaxLen = 10;
+  let contentMaxLen = 20;
+  for (let i = 0; i < result.length; i++) {
+    result[i].title =
+      result[i].title.length > titleMaxLen
+        ? result[i].title.substring(0, titleMaxLen) + "..."
+        : result[i].title;
+
+    result[i].content =
+      result[i].content.length > contentMaxLen
+        ? result[i].content.substring(0, contentMaxLen) + "..."
+        : result[i].content;
+  }
   res.render("home.ejs", { posts: result });
 });
 
@@ -48,7 +62,7 @@ app.post("/write", async (req, res) => {
     let data = {
       title: req.body.title,
       content: req.body.content,
-      date: new Date().toISOString().slice(0, 10),
+      date: new Date().toLocaleDateString(),
     };
     await db.collection("post").insertOne(data);
     res.redirect("/");
