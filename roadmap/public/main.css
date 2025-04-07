@@ -38,10 +38,30 @@ body {
   padding-top: 20px;
 }
 
+.container .post_container .write_link_box {
+  width: 900px;
+  height: 30px;
+  margin-top: 10px;
+  text-align: right;
+}
+
+.container .post_container .write_link_box .write_link {
+  padding: 10px;
+  color: white;
+  background-color: rgb(151, 174, 234);
+  border-radius: 10px;
+}
+
+.container .post_container .write_link_box .write_link:hover,
+.container .post_container .write_link_box .write_link:focus {
+  color: white;
+  background-color: rgb(120, 151, 230);
+}
+
 .container .post_container .post_header {
   display: flex;
   justify-content: space-between;
-  margin: 50px 0 10px 0;
+  margin: 30px 0 10px 0;
   padding: 0 20px;
 }
 
@@ -85,7 +105,14 @@ body {
 }
 
 .container .post_container .post_bottom .post_item .quick_delete {
-  padding-bottom: 5px;
+  padding-bottom: 2px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.container .post_container .post_bottom .post_item .quick_delete:hover,
+.container .post_container .post_bottom .post_item .quick_delete:focus {
+  font-size: 20px;
 }
 
 .container .nav {
@@ -158,17 +185,19 @@ a {
   width: 100px;
   height: 40px;
   margin-left: 550px;
-  border: 1px solid #999;
+  border: none;
   border-radius: 5px;
-  background-color: #eee;
+  color: white;
+  background-color: rgb(151, 174, 234);
+  font-family: "GowunDodum-Regular";
 }
 
 .write_btn:hover {
-  background-color: #ddd;
+  background-color: rgb(120, 151, 230);
 }
 
 .write_btn:focus {
-  background-color: #ccc;
+  background-color: rgb(120, 151, 230);
 }
 
 /* -------------- detail.ejs ---------------- */
