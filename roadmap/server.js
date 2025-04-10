@@ -99,7 +99,7 @@ app.post("/edit/:id", async (req, res) => {
   let data = {
     title: req.body.title,
     content: req.body.content,
-    date: new Date().toISOString().slice(0, 10),
+    date: new Date().toLocaleDateString(),
   };
   await db
     .collection("post")
