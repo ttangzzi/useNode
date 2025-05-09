@@ -31,6 +31,7 @@ body {
   height: 1000px;
   background-color: #ddd;
 }
+
 .container {
   width: 1000px;
   height: 100%;
@@ -246,4 +247,9 @@ a {
 .detail_content {
   margin-top: 30px;
   padding: 5px 0 5px 5px;
+}
+
+/* -------------- nav.ejs ---------------- */
+.logBox {
+  margin-left: 5px;
 }

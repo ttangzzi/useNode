@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>정기성 홈페이지</title>
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <%- include("nav.ejs") %>
+      <form class="write_form" action="/regist" method="POST">
+        <div class="write_box">
+          <input
+            class="write_title"
+            placeholder="아이디"
+            type="text"
+            name="userId"
+          />
+          <br />
+          <input
+            class="write_title"
+            placeholder="비밀번호"
+            type="password"
+            name="userPw"
+          />
+          <br />
+          <input
+            class="write_title"
+            placeholder="사용자 이름"
+            type="text"
+            name="userName"
+          />
+          <br />
+          <button class="write_btn">회원가입</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

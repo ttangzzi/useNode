@@ -106,3 +106,11 @@ app.post("/edit/:id", async (req, res) => {
     .updateOne({ _id: new ObjectId(req.params.id) }, { $set: data });
   res.redirect("/");
 });
+
+app.get("/regist", (req, res) => {
+  res.render("regist.ejs");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login.ejs");
+});
