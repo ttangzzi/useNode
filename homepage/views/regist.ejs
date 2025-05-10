@@ -10,32 +10,141 @@
   <body>
     <div class="container">
       <%- include("nav.ejs") %>
-      <form class="write_form" action="/regist" method="POST">
-        <div class="write_box">
+      <form
+        id="form"
+        class="write_form"
+        action="/regist"
+        method="POST"
+        autocomplete="off"
+      >
+        <div class="login_box">
           <input
-            class="write_title"
+            id="userId"
+            class="write_login"
             placeholder="아이디"
             type="text"
             name="userId"
           />
-          <br />
+          <span class="notice" id="idMsg">4~20글자, 영문/숫자로 작성</span>
+          <div class="dupBox">
+            <span class="dupBtn" id="dupCheck">중복검사</span>
+            <span id="dupMsg"></span>
+          </div>
           <input
-            class="write_title"
+            id="userPw"
+            class="write_login"
             placeholder="비밀번호"
             type="password"
             name="userPw"
           />
-          <br />
+          <span class="notice" id="pwMsg">8~20글자, 영문/숫자로 작성</span>
           <input
-            class="write_title"
+            id="userName"
+            class="write_login"
             placeholder="사용자 이름"
             type="text"
             name="userName"
           />
-          <br />
+          <span class="notice" id="nameMsg">2~10글자, 한글/영문으로 작성</span>
           <button class="write_btn">회원가입</button>
         </div>
       </form>
     </div>
+    <script>
+      // id, pw, name의 input태그와 span태그 가져와 저장하기
+      const userId = document.querySelector("#userId");
+      const idMsg = document.querySelector("#idMsg");
+      const userPw = document.querySelector("#userPw");
+      const pwMsg = document.querySelector("#pwMsg");
+      const userName = document.querySelector("#userName");
+      const nameMsg = document.querySelector("#nameMsg");
+      const form = document.querySelector("#form");
+
+      // 검증 통과하면 ✅ 초록 / 실패하면 ⛔ 빨강 -> UI적인 부분
+      function checkedInput(input, span, regex, message) {
+        input.addEventListener("blur", () => {
+          const value = input.value.trim();
+          if (regex.test(value)) {
+            span.innerText = `✅ ${message}`;
+            span.style.color = "green";
+          } else {
+            span.innerText = `⛔ ${message}`;
+            span.style.color = "red";
+          }
+        });
+      }
+
+      // 각각 input에 blur 이벤트 붙이기
+      checkedInput(
+        userId,
+        idMsg,
+        /^[a-zA-Z0-9]{4,20}$/,
+        "4~20글자, 영문/숫자로 작성"
+      );
+
+      checkedInput(
+        userPw,
+        pwMsg,
+        /^[a-zA-Z0-9]{8,20}$/,
+        "8~20글자, 영문/숫자로 작성"
+      );
+
+      checkedInput(
+        userName,
+        nameMsg,
+        /^[a-zA-Z가-힣]{2,10}$/,
+        "2~10글자, 한글/영문으로 작성"
+      );
+
+      // 중복검사 (비동기 방식)
+      const dupCheck = document.querySelector("#dupCheck");
+      const dupMsg = document.querySelector("#dupMsg");
+      let isDup = true;
+      dupCheck.addEventListener("click", () => {
+        if (/^[a-zA-Z0-9]{4,20}$/.test(userId.value.trim())) {
+          fetch("/check", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId: userId.value.trim() }),
+          })
+            .then((r) => {
+              return r.json();
+            })
+            .then((data) => {
+              if (data.exists) {
+                dupMsg.innerText = " : 중복된 아이디입니다.";
+                dupMsg.style.color = "red";
+              } else {
+                dupMsg.innerText = " : 사용 가능한 아이디입니다.";
+                dupMsg.style.color = "green";
+              }
+              isDup = data.exists;
+            })
+            .catch((error) => {
+              console.log("오류");
+            });
+        } else {
+          dupMsg.innerText = " : 올바른 아이디로 검사해주세요.";
+          dupMsg.style.color = "red";
+        }
+      });
+
+      // 정규식에 해당되지 않으면 (검증이 하나라도 틀리면) POST 전송(submit) 안되도록 막기
+      form.addEventListener("submit", (e) => {
+        const idValid = /^[a-zA-Z0-9]{4,20}$/.test(userId.value.trim());
+        const pwValid = /^[a-zA-Z0-9]{8,20}$/.test(userPw.value.trim());
+        const nameValid = /^[a-zA-Z가-힣]{2,10}$/.test(userName.value.trim());
+
+        if (!idValid || !pwValid || !nameValid) {
+          e.preventDefault(); // 제출 막기
+          alert("입력 정보를 다시 한번 체크해주세요.");
+        } else if (isDup) {
+          e.preventDefault(); // 제출 막기
+          alert("중복검사를 다시 진행해주세요.");
+        }
+      });
+    </script>
   </body>
 </html>

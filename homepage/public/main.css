@@ -249,7 +249,47 @@ a {
   padding: 5px 0 5px 5px;
 }
 
-/* -------------- nav.ejs ---------------- */
-.logBox {
-  margin-left: 5px;
+/* -------------- regist.ejs ---------------- */
+
+.write_login {
+  width: 50%;
+  height: 30px;
+  font-size: 20px;
+  padding: 0 10px;
+  margin: 0 10px 15px 0;
+  border: none;
+  border-bottom: 1px solid #999;
+  display: inline-block;
+  text-align: left;
+  background-color: #eee;
+}
+
+.write_login:focus {
+  outline: none;
+}
+
+.notice {
+  font-size: 15px;
+  color: gray;
+}
+
+.dupBox {
+  margin-left: 10px;
+  margin-bottom: 15px;
+}
+
+.dupBtn {
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 3px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dupBtn:hover {
+  background: #ddd;
+}
+
+.dupBtn:active {
+  background: #ccc;
 }

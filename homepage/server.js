@@ -24,6 +24,9 @@ new MongoClient(url)
   });
 const { ObjectId } = require("mongodb");
 
+// 비밀번호 해싱 위함 : bcrypt
+const bcrypt = require("bcrypt");
+
 // public 안의 파일들을 가져다 쓸 수 있도록 하는 코드
 app.use(express.static(__dirname + "/public"));
 
@@ -109,6 +112,36 @@ app.post("/edit/:id", async (req, res) => {
 
 app.get("/regist", (req, res) => {
   res.render("regist.ejs");
+});
+
+app.post("/regist", async (req, res) => {
+  // req.body에서 Id, Pw, Name을 추출하여 따로 저장
+  const { userId, userPw, userName } = req.body;
+
+  // 모두 공백 불가
+  // Id가 4~20자리의 영문, 숫자로만 입력됐는지지 검증(T/F)
+  const checkedId = /^[a-zA-Z0-9]{4,20}$/.test(userId);
+  // Pw가 8~20자리의 영문, 숫자로만 입력됐는지지 검증(T/F)
+  const checkedPw = /^[a-zA-Z0-9]{8,20}$/.test(userPw);
+  // Name이 2~10자리의 한글, 영문으로만 입력됐는지지 검증(T/F)
+  const checkedName = /^[a-zA-Z가-힣]{2,10}$/.test(userName);
+
+  // 모든 검증값이 True라면 진행하도록
+  if (checkedId && checkedPw && checkedName) {
+    // 비밀번호를 해싱 + salt 처리 (비동기 처리)
+    const hashPw = await bcrypt.hash(userPw, 10);
+  }
+
+  // db.collection("user").insertOne({});
+});
+
+app.post("/check", async (req, res) => {
+  let result = await db.collection("user").findOne({ userId: req.body.userId });
+  if (result) {
+    res.json({ exists: true }); // 아이디 중복
+  } else {
+    res.json({ exists: false }); // 아이디 사용 가능
+  }
 });
 
 app.get("/login", (req, res) => {
