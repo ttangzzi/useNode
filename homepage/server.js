@@ -15,8 +15,8 @@ new MongoClient(url)
     db = client.db("homepage"); // database name
 
     // DB접속이 완료 되어야 서버를 띄우도록 하기
-    app.listen(8080, () => {
-      console.log("http://localhost:8080 Server Running");
+    app.listen(3000, () => {
+      console.log("3000port Server Running");
     });
   })
   .catch((err) => {
@@ -65,7 +65,7 @@ app.post("/write", async (req, res) => {
     let data = {
       title: req.body.title,
       content: req.body.content,
-      date: new Date().toLocaleDateString(),
+      date: new Date().toLocaleDateString("ko-KR"),
     };
     await db.collection("post").insertOne(data);
     res.redirect("/");
@@ -102,7 +102,7 @@ app.post("/edit/:id", async (req, res) => {
   let data = {
     title: req.body.title,
     content: req.body.content,
-    date: new Date().toLocaleDateString(),
+    date: new Date().toLocaleDateString("ko-KR"),
   };
   await db
     .collection("post")
