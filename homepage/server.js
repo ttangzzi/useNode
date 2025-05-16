@@ -7,6 +7,9 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
+// 세션 DB에 저장하기 위한 require
+const MongoStore = require("connect-mongo");
+
 const app = express();
 
 const { MongoClient } = require("mongodb");
@@ -43,6 +46,13 @@ app.use(
     secret: "0802",
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 },
+    httpOnly: true,
+    store: MongoStore.create({
+      mongoUrl:
+        "mongodb+srv://cvbg0802:jks0802@cluster0.bnf6i0t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+      dbName: "homepage",
+    }),
   })
 );
 
@@ -54,6 +64,13 @@ app.set("view engine", "ejs");
 // req.body를 통해 클라이언트에서 보낸 정보를 가져올 수 있도록 하는 코드
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 모든 EJS에서 user 자동 사용 가능
+// ejs에서 로그인 여부에 따라 UI변경이 필요하기 때문
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
 
 app.get("/", async (req, res) => {
   let result = await db.collection("post").find().toArray();
@@ -158,7 +175,7 @@ app.post("/regist", async (req, res) => {
     const hashPw = await bcrypt.hash(userPw, 10);
     await db
       .collection("user")
-      .insertOne({ userId: userId, userPw: userPw, userName: userName });
+      .insertOne({ userId: userId, userPw: hashPw, userName: userName });
     res.set("Cache-Control", "no-store");
     res.redirect("/");
   }
@@ -174,9 +191,9 @@ app.post("/check", async (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+  res.set("Cache-Control", "no-store");
   if (req.isAuthenticated()) {
     // 이미 로그인된 사용자라면 메인 페이지로 리디렉션
-    alert("이미 로그인 상태입니다. (잘못된 접근)");
     return res.redirect("/");
   }
   // 로그인되지 않은 사용자만 로그인 페이지 렌더링
@@ -197,7 +214,7 @@ passport.use(
         return cb(null, false, { message: "아이디가 존재하지 않습니다." });
       }
 
-      if (result.userPw == userPw) {
+      if (await bcrypt.compare(userPw, result.userPw)) {
         return cb(null, result);
       } else {
         return cb(null, false, {
@@ -226,16 +243,6 @@ passport.serializeUser((user, done) => {
   });
 });
 
-// 세션 유효기간 설정
-app.use(
-  session({
-    secret: "0802",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 60 * 60 * 1000 },
-  })
-);
-
 // 쿠키를 확인하여 비교
 passport.deserializeUser(async (user, done) => {
   let result = await db
@@ -244,5 +251,17 @@ passport.deserializeUser(async (user, done) => {
   delete result.userPw;
   process.nextTick(() => {
     return done(null, result);
+  });
+});
+
+// 로그아웃
+app.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) return next(err);
+
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid"); // 세션 쿠키 삭제
+      res.redirect("/"); // 또는 원하는 페이지로 리디렉션
+    });
   });
 });

@@ -1,7 +1,12 @@
 <div class="nav">
   <a href="/" style="font-weight: bold; font-size: 18px">TTANGZZI</a>
   <div>
+    <% if (user) { %>
+    <span style="margin-right: 15px"><%= user.userName %>님</span>
+    <a href="/logout">로그아웃</a>
+    <% } else { %>
     <a href="/regist" style="margin-right: 15px">회원가입</a>
     <a href="/login">로그인</a>
+    <% } %>
   </div>
 </div>
