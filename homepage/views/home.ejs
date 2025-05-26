@@ -26,7 +26,7 @@
           <div class="post_item">
             <a href="/detail/<%= posts[i]._id %>"><%= posts[i].title %></a>
             <a href="/detail/<%= posts[i]._id %>"><%= posts[i].content %></a>
-            <span>익명</span>
+            <span><%= posts[i].writer %></span>
             <span><%= posts[i].date %></span>
             <span class="quick_delete" data-id="<%= posts[i]._id %>">🗑️</span>
           </div>

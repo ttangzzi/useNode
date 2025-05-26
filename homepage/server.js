@@ -72,8 +72,17 @@ app.use((req, res, next) => {
   next();
 });
 
+// 로그인 확인 미들웨어
+const checkLogin = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next(); // 로그인한 경우 통과
+  }
+  res.status(401).render("error.ejs", { message: "로그인이 필요합니다." });
+};
+
 app.get("/", async (req, res) => {
-  let result = await db.collection("post").find().toArray();
+  let result = await db.collection("post").find().sort({ _id: -1 }).toArray();
+
   // 보이는 글자 수 제한
   let titleMaxLen = 10;
   let contentMaxLen = 20;
@@ -91,16 +100,17 @@ app.get("/", async (req, res) => {
   res.render("home.ejs", { posts: result });
 });
 
-app.get("/write", (req, res) => {
+app.get("/write", checkLogin, (req, res) => {
   res.render("write.ejs");
 });
 
-app.post("/write", async (req, res) => {
+app.post("/write", checkLogin, async (req, res) => {
   if (req.body.title !== "" && req.body.content !== "") {
     let data = {
       title: req.body.title,
       content: req.body.content,
       date: new Date().toLocaleDateString("ko-KR"),
+      writer: req.user.userName,
     };
     await db.collection("post").insertOne(data);
     res.redirect("/");
